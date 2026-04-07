@@ -120,6 +120,12 @@ python app.py
 
 先把结构看懂，再接 `LLM`，你会更稳。
 
+## Extra Reading
+
+如果你学到 `05.5` 或 `06` 时，想看一篇更连续、更完整的讲解，可以继续读：
+
+- [从 Tool Calling 到 LLM Agent](./docs/from-tool-calling-to-llm-agent.md)
+
 ## Next Step
 
 如果你是第一次打开这个仓库，直接从 [00-setup](./00-setup/README.md) 开始。
