@@ -1,76 +1,125 @@
-# MyAgent Learning Workspace
+# agent-from-scratch
 
-## 这是什么
+Learn how to build an `Agent` from scratch in `Python`, starting with a minimal rule-based version and gradually evolving toward an `LLM-based agent`.
 
-这是你的专属 `Agent` 学习空间。
+这是一个面向初学者的学习型项目仓库。它不是一上来就把你丢进复杂框架，而是先带你看懂最小 `Agent loop`，再一步步理解 `tool calling`、`workflow`、`LLM-based agent` 这些真正关键的概念。
 
-我会带你从零开始，先建立对 `Agent` 的正确理解，再用最少量的 `Python` 知识，做出一个真正能在本地运行的命令行 `Agent`。
+## Who This Is For
 
-这套资料专门按你的情况设计：
+这个仓库特别适合：
 
-- 零基础
-- 中文讲解
-- 保留必要英文术语
-- 使用 `Miniconda3 + VS Code + PowerShell`
+- 想从零开始理解 `Agent`
+- 会一点点终端操作，但还不熟悉 `Python`
+- 不想一开始就被框架和 API 细节淹没
+- 想先看懂结构，再逐步升级成更真实的 `AI Agent`
 
-## 你会学到什么
+## What You Will Build
 
-学完这一套后，你应该能做到：
+你会先完成一个最小可运行的命令行 `Agent`。
 
-1. 用自己的话解释什么是 `Agent`
-2. 理解一个最小 `Agent` 的工作流程
-3. 看懂并运行一个本地命令行 `Agent`
-4. 自己修改这个小项目，给它增加新能力
-
-## 你应该怎么学
-
-建议顺序：
-
-1. `00-setup`
-2. `01-what-is-agent`
-3. `02-python-for-agent`
-4. `03-agent-core`
-5. `04-exercises`
-6. `05-my-first-agent`
-7. `05.5-from-rules-to-llm-agent`
-8. `06-glossary`
-9. `07-next-steps`
-
-你不用一次看完全部内容。最好的节奏是：
-
-- 先读一小节
-- 立刻做一个小练习
-- 再推进一点小项目
-
-## 最终项目
-
-你会做出一个最小可运行的命令行 `Agent`。
-
-第一版它会有 3 个工具：
+第一版项目包含 3 个工具：
 
 - `get_time`
 - `save_note`
 - `read_notes`
 
-这个小项目虽然不复杂，但已经能让你真正看到 `Agent` 的最小闭环：
+它展示的是一个最小但完整的 `Agent loop`：
 
 `input -> decide -> act -> observe -> reply`
 
-## 遇到问题时怎么看
+然后你会继续学习：
 
-如果你中途卡住，不要慌。优先检查这几件事：
+- `rule-based agent` 和 `LLM-based agent` 的区别
+- 为什么 `tool calling` 是现代 `AI Agent` 的核心能力之一
+- 如何从规则驱动版本自然升级到模型驱动版本
 
-- `conda environment` 有没有激活
-- `VS Code` 有没有选对 `Python interpreter`
-- 命令是不是在正确的文件夹里运行
-- 代码是不是改错了文件
+## Learning Path
 
-## 阅读建议
+建议按这个顺序学习：
 
-根目录下有一个 [recommended-reading.md](/C:/Users/admin/Desktop/MyAgent/recommended-reading.md)。
+1. [00-setup](./00-setup/README.md)
+2. [01-what-is-agent](./01-what-is-agent/README.md)
+3. [02-python-for-agent](./02-python-for-agent/README.md)
+4. [03-agent-core](./03-agent-core/README.md)
+5. [04-exercises](./04-exercises/README.md)
+6. [05-my-first-agent](./05-my-first-agent/README.md)
+7. [05.5-from-rules-to-llm-agent](./05.5-from-rules-to-llm-agent/README.md)
+8. [06-glossary](./06-glossary/README.md)
+9. [07-next-steps](./07-next-steps/README.md)
 
-那不是“越快读完越好”的清单，而是“学到哪一步读哪篇”的清单。
+## Project Structure
 
-## 从哪里开始
+```text
+agent-from-scratch/
+├─ 00-setup/
+├─ 01-what-is-agent/
+├─ 02-python-for-agent/
+├─ 03-agent-core/
+├─ 04-exercises/
+├─ 05-my-first-agent/
+├─ 05.5-from-rules-to-llm-agent/
+├─ 06-glossary/
+├─ 07-next-steps/
+├─ recommended-reading.md
+└─ README.md
+```
 
-现在就从 [00-setup/README.md](/C:/Users/admin/Desktop/MyAgent/00-setup/README.md) 开始。
+## Quick Start
+
+如果你只是想先跑起来，按下面这几步来：
+
+1. 创建环境
+
+```powershell
+conda create -n myagent python=3.11 -y
+conda activate myagent
+```
+
+2. 打开项目
+
+用 `VS Code` 打开当前仓库，然后安装：
+
+- `Python` by Microsoft
+- `Pylance` by Microsoft
+
+3. 跑第一个文件
+
+```powershell
+cd .\00-setup
+python hello.py
+```
+
+4. 跑最小 Agent
+
+```powershell
+cd ..\05-my-first-agent\my-first-agent
+python app.py
+```
+
+你可以试试这些输入：
+
+- `time`
+- `save 今天开始学习 Agent`
+- `read notes`
+
+## Recommended Reading
+
+根目录有一份 [recommended-reading.md](./recommended-reading.md)。
+
+它按学习阶段整理了官方文档和补充视频，适合边学边看，而不是一口气全读完。
+
+## Current Scope
+
+当前仓库里的主项目还是教学版：
+
+- 它已经是一个最小 `Agent` 结构演示
+- 但决策层目前还是规则驱动
+- 还没有把工具选择交给 `LLM`
+
+这不是缺点，而是刻意设计的学习路径。
+
+先把结构看懂，再接 `LLM`，你会更稳。
+
+## Next Step
+
+如果你是第一次打开这个仓库，直接从 [00-setup](./00-setup/README.md) 开始。

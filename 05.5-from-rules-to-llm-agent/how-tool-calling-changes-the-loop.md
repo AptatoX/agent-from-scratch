@@ -1,12 +1,12 @@
 # How Tool Calling Changes The Loop
 
-你已经知道最小循环是：
+你已经知道最小循环可以写成：
 
 `input -> decide -> act -> observe -> reply`
 
-当你把规则型版本升级成 `LLM-based agent` 时，这个循环本身没有消失，但 `decide` 和 `reply` 两步会明显变化。
+当规则型 agent 升级成 `LLM-based agent` 时，这个循环没有消失，只是“decide”这一步换了地方。
 
-## 规则型版本的循环
+## 先看规则型版本
 
 ```text
 user input
@@ -16,66 +16,61 @@ user input
 -> print response
 ```
 
-这里的“脑子”主要是你写的 `if/else`。
+在这个版本里，程序自己判断要不要调用工具，也自己决定用哪个工具。模型还没有真正参与决策。
 
-## LLM 参与后的循环
+## 再看 tool calling 版本
 
 ```text
-user input
--> LLM decides whether to call a tool
--> tool executes
--> tool result returns
--> LLM reads result
--> LLM writes final answer
+user input + history + available tools
+-> program sends them to the model
+-> model decides: answer now or request a tool
+-> if tool is needed, program executes it
+-> program sends tool_result back to the model
+-> model reads the result and continues
+-> model returns the final answer
 ```
 
-这里的“脑子”开始变成：
+这里最重要的变化是：
 
-- 一部分是程序
-- 一部分是模型
+- 程序不再只把一句用户输入丢给模型
+- 程序会把消息历史、可用工具，一起发给模型
+- 模型先判断自己是直接回答，还是先请求一个工具
+- 如果模型请求工具，程序负责真正执行
+- 执行完以后，程序把 `tool_result` 再送回模型
+- 模型读到结果后，继续组织下一步，直到给出最终回答
 
-## 真正变化最大的地方
+## 这意味着什么
 
-### 1. 工具选择变灵活
-
-你不用再把所有触发词都手写出来。
-
-例如用户说：
-
-- `现在几点`
-- `帮我看下时间`
-- `what time is it`
-
-规则型程序可能要写很多判断。
-
-但 `LLM` 通常能把这些都理解为“应该调用 `get_time`”。
-
-### 2. 参数提取更自然
-
-比如：
-
-`帮我记一下，今天开始正式学 Agent`
-
-规则型程序通常只能处理固定格式，比如：
-
-`save 今天开始正式学 Agent`
-
-但 `LLM` 可以更自然地提取出真正应该写入 `save_note` 的内容。
-
-### 3. reply 也更像自然语言
-
-规则型版本通常只能输出固定模板。
-
-而 `LLM` 可以把工具结果整理成更自然、更贴近用户意图的回答。
-
-## 你要记住的一点
-
-`tool calling` 不是“模型自己真的去执行代码”。
+`tool calling` 不是“模型自己跑去执行代码”。
 
 更准确地说，是：
 
-- 模型表达“我想调用哪个工具、参数是什么”
-- 你的程序真正去执行工具
-- 再把执行结果交还给模型或交还给程序继续处理
+1. 模型负责决定
+2. 程序负责执行
+3. 结果再回到模型继续推理
 
-也就是说，真正执行工具的始终还是程序，不是模型本身。
+所以你可以把它理解成一种分工：
+
+- 模型像“会思考的调度者”
+- 程序像“真正干活的执行者”
+
+## 为什么这一步很关键
+
+一旦进入这种循环，很多以前只能靠硬编码处理的事，就可以让模型参与了。
+
+比如：
+
+- 什么时候该查时间
+- 什么时候该读笔记
+- 什么时候该把用户的话整理成结构化参数
+
+你不用把所有规则都写死，程序也不必只会固定模板。
+模型可以先看上下文，再决定下一步该不该调用工具。
+
+## 一句话记忆
+
+`tool calling` 的核心不是“模型替你执行工具”。
+
+核心是：
+
+**程序把上下文和工具交给模型，模型决定要不要用工具；如果要用，程序执行，然后把结果再交回模型继续。**
